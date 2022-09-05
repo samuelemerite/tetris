@@ -53,9 +53,9 @@ const player={
 ctx.scale(4, 1);
 
 
-function drawPieces(pieces,x,y){
+/*function drawPieces(pieces,x,y){
 
-}
+}*/
 
 document.addEventListener('keydown', event => {
     if(event.keyCode === 37 || event.keyCode === 52 || event.keyCode === 100 ){
@@ -64,11 +64,11 @@ document.addEventListener('keydown', event => {
     {
         player.pos.x++;
     }
-    else if (event.keyCode === 40 || event.keyCode === 104 || event.keyCode === 56)
+    else if (event.keyCode === 40)
     {
         player.pos.y++;
         count =0;
     }
-    /*else if (event.keyCode === 38 || event.keyCode === 50 || event.keyCode === 98 )
+    /*else if (event.keyCode === 38 )
     { player.matrix=rotation(player.matrix,1)}*/
   });
