@@ -1,6 +1,5 @@
-const canvas = document.querySelector('canvas');
+const canvas = document.getElementById("tetris");
 const ctx = canvas.getContext('2d');
-ctx.fillStyle = 'black';
 var color=["cyan","yellow","violet","green","red","blue","orange"];
 //ctx.fillRect(0, 0, 10, 10);
 pieces=[
@@ -49,13 +48,25 @@ pieces=[
 const arene=[];
 const player={
     pos:{ x:0, y: 0},
+    matrix: pieces[0]
 }
-ctx.scale(4, 1);
+ctx.scale(20, 20);
 
 
-/*function drawPieces(pieces,x,y){
+function drawPieces(matrix,x,y){
 
-}*/
+    for(let i=0 ; i<matrix.length ; i++)
+    {
+        for(let j=0; j<matrix[i].length; j++)
+        {
+            if(matrix[i][j])
+            {
+                ctx.fillRect(color[2]);
+                ctx.fillRect(x+j,y+i,1,1);
+            }
+        }
+    }
+}
 
 document.addEventListener('keydown', event => {
     if(event.keyCode === 37 || event.keyCode === 52 || event.keyCode === 100 ){
@@ -72,3 +83,4 @@ document.addEventListener('keydown', event => {
     /*else if (event.keyCode === 38 )
     { player.matrix=rotation(player.matrix,1)}*/
   });
+  drawPieces(player.matrix,player.pos.x,player.pos.y);
