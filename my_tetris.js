@@ -93,20 +93,20 @@ function rotation(matrix,dir)
     return newMatrix;
 }
 
-/*function collides(player, arena)
+function collides(player, arena)
 {
-    for(let i= 0; i< matrix.length ; i++)
+    for(let i= 0; i< player.matrix.length ; i++)
     {
-        for(let j=0 ; j< matrix[i].length; j++)
+        for(let j=0 ; j< player.matrix[i].length; j++)
         {
-            if( player.matrix[i][j] && arena[player.position.y + i +1][player.position.x + j +1])
+            if( player.matrix[i][j] && arena[player.position.y + i +1][player.position.x + i +1])
             {
                 return 1;
             }
         }
     }
     return 0;
-}*/
+}
 
 /*function mergeArena( matrix , x, y)
 {
@@ -139,10 +139,10 @@ function update( time = 0)
     lastTime = time;
     count += dt;
     
-    /*if(collides(player,arena))
+    if(collides(player,arena))
     {
         console.log('oof')
-    }*/
+    }
 
 
     if( count >= interval ){
