@@ -2,7 +2,7 @@ const canvas = document.getElementById("tetris");
 const ctx = canvas.getContext('2d');
 const scale= 20;
 ctx.scale(scale,scale);
-const colorPieces=["cyan","yellow","violet","green","red","blue","orange"];
+const colorPieces=["null","cyan","yellow","violet","green","red","blue","orange"];
 
 const twidth =canvas.clientWidth/ scale;
 const theight = canvas.clientHeight / scale ;
@@ -15,41 +15,48 @@ pieces=[
         [1,0,0,0]
     ],
     [
-        [1,1],
-        [1,1]
+        [2,2],
+        [2,2]
     ],
     [
-        [1,1,1],
-        [0,1,0],
+        [3,3,3],
+        [0,3,0],
         [0,0,0]
     ],
     [
-        [0,1,1],
-        [1,1,0],
+        [0,4,4],
+        [4,4,0],
         [0,0,0]
     ],
     [
-        [1,1,0],
-        [0,1,1],
+        [5,5,0],
+        [0,5,5],
         [0,0,0]
     ],
     [
-        [0,1,0],
-        [0,1,0],
-        [1,1,0]
+        [0,6,0],
+        [0,6,0],
+        [6,6,0]
     ],
     [
-        [0,1,0],
-        [0,1,0],
-        [0,1,1]
+        [0,7,0],
+        [0,7,0],
+        [0,7,7]
     ]
 ];
 const arena = [];
 
+let rand;
+
 const player ={
     position: {x: 0, y: 0},
-    matrix:pieces[3]
+    matrix: null,
+    color: null
 }
+
+rand = Math.floor(Math.random() * pieces.length);
+player.matrix= pieces[rand];
+player.color= colorPieces[rand-1];
 
 function drawPieces(matrix,x,y)
 {
@@ -125,8 +132,10 @@ function drawArena()
     {
         for(let j=0; j< arena[i].length-1;j++)
         {
+            
             if(arena[i][j])
             {
+                ctx.fillStyle = colorPieces[arena[i][j]];
                 ctx.fillRect(j-1, i-1, 1,1);
             }
         }
@@ -170,12 +179,13 @@ function update( time = 0)
         mergeArena(player.matrix,player.position.x, player.position.y-1);
         player.position.x=0;
         player.position.y=0;
+        interval=1000;
     }
 
     ctx.fillStyle= '#fff';
     ctx.fillRect(0, 0, canvas.clientWidth,canvas.clientHeight);
-    ctx.fillStyle = colorPieces[2];
     drawArena();
+    ctx.fillStyle = player.color;
     drawPieces(player.matrix,player.position.x,player.position.y);
     requestAnimationFrame(update);
 }
@@ -184,17 +194,34 @@ document.addEventListener("keydown", event =>{
     if(event.keyCode === 37 || event.keyCode === 52 || event.keyCode === 100)
     {
         player.position.x--;
+        if(collides(player, arena))
+        {
+            player.position.x++;
+        }
     }
     else if( event.keyCode ===39 || event.keyCode === 102 || event.keyCode === 54)
     {
         player.position.x++;
+        if(collides(player, arena))
+        {
+            player.position.x--;
+        }
     }
     else if( event.keyCode === 40 || event.keyCode === 56 || event.keyCode === 98)
     {
         player.position.y++;
+        count=0;
     }
     else if ( event.keyCode === 38 || event.keyCode === 65 || event.keyCode === 104){
         player.matrix =rotation(player.matrix,1);
+        if(collides(player, arena))
+        {
+            player.matrix = rotation(player.matrix ,-1);
+        }
+    }
+    else if( event.keyCode === 32 )
+    {
+        interval=1;
     }
 })
 //drawPieces(player.matrix,player.position.x,player.position.y);
