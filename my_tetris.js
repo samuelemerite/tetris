@@ -108,10 +108,30 @@ function collides(player, arena)
     return 0;
 }
 
-/*function mergeArena( matrix , x, y)
+function mergeArena( matrix , x, y)
 {
+    for(let i=0 ; i< matrix.length; i++)
+    {
+        for(let j=0; j<matrix[i].length; j++)
+        {
+            arena[y+i+1][x+j+1] = arena[y +i + 1][x+j+1] || matrix[i][j];
+        }
+    }
     
-}*/
+}
+function drawArena()
+{
+    for(let i=0; i< arena.length-2; i++)
+    {
+        for(let j=0; j< arena[i].length-1;j++)
+        {
+            if(arena[i][j])
+            {
+                ctx.fillRect(j-1, i-1, 1,1);
+            }
+        }
+    }
+}
 
 function initArena()
 {
@@ -139,19 +159,23 @@ function update( time = 0)
     lastTime = time;
     count += dt;
     
-    if(collides(player,arena))
-    {
-        console.log('oof')
-    }
-
-
+    
     if( count >= interval ){
         player.position.y++;
         count=0;
     }
+
+    if(collides(player,arena))
+    {
+        mergeArena(player.matrix,player.position.x, player.position.y-1);
+        player.position.x=0;
+        player.position.y=0;
+    }
+
     ctx.fillStyle= '#fff';
     ctx.fillRect(0, 0, canvas.clientWidth,canvas.clientHeight);
     ctx.fillStyle = colorPieces[2];
+    drawArena();
     drawPieces(player.matrix,player.position.x,player.position.y);
     requestAnimationFrame(update);
 }
