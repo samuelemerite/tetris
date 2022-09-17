@@ -54,9 +54,6 @@ const player ={
     color: null
 }
 
-rand = Math.floor(Math.random() * pieces.length);
-player.matrix= pieces[rand];
-player.color= colorPieces[rand-1];
 
 function drawPieces(matrix,x,y)
 {
@@ -132,7 +129,6 @@ function drawArena()
     {
         for(let j=0; j< arena[i].length-1;j++)
         {
-            
             if(arena[i][j])
             {
                 ctx.fillStyle = colorPieces[arena[i][j]];
@@ -179,6 +175,11 @@ function update( time = 0)
         mergeArena(player.matrix,player.position.x, player.position.y-1);
         player.position.x=0;
         player.position.y=0;
+
+        rand = Math.floor(Math.random() * pieces.length);
+        player.matrix= pieces[rand];
+        player.color= colorPieces[rand+1];
+
         interval=1000;
     }
 
