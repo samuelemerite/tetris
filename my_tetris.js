@@ -54,6 +54,9 @@ const player ={
     color: null
 }
 
+rand = Math.floor(Math.random() * pieces.length);
+player.matrix= pieces[rand];
+player.color= colorPieces[rand+1];
 
 function drawPieces(matrix,x,y)
 {
@@ -123,6 +126,31 @@ function mergeArena( matrix , x, y)
     }
     
 }
+
+function clearBlocks()
+{
+    for(let i=1; i< arena.length-2; i++)
+    {
+        let clear =1;
+        for(let j=1; i<j<arena[i].length - 1; j++)
+        {
+            if(!arena [i][j])
+            {
+                clear = 0 ;
+            }
+            if (clear)
+            {
+                let r =new Array(twidth.fill(0));
+                r.push(1);
+                r.unshift(1);
+
+                arena.splice(i,1);
+                arena.splice(1,0,r);
+            }
+        }
+    }
+}
+
 function drawArena()
 {
     for(let i=0; i< arena.length-2; i++)
@@ -173,6 +201,7 @@ function update( time = 0)
     if(collides(player,arena))
     {
         mergeArena(player.matrix,player.position.x, player.position.y-1);
+        clearBlocks();
         player.position.x=0;
         player.position.y=0;
 
