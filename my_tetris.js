@@ -106,7 +106,7 @@ function collides(player, arena)
     {
         for(let j=0 ; j< player.matrix[i].length; j++)
         {
-            if( player.matrix[i][j] && arena[player.position.y + i +1][player.position.x + i +1])
+            if( player.matrix[i][j] && arena[player.position.y + i +1][player.position.x + j +1])
             {
                 return 1;
             }
@@ -132,7 +132,7 @@ function clearBlocks()
     for(let i=1; i< arena.length-2; i++)
     {
         let clear =1;
-        for(let j=1; i<j<arena[i].length - 1; j++)
+        for(let j=1; j<arena[i].length - 1; j++)
         {
             if(!arena [i][j])
             {
@@ -140,7 +140,7 @@ function clearBlocks()
             }
             if (clear)
             {
-                let r =new Array(twidth.fill(0));
+                let r =new Array(twidth).fill(0);
                 r.push(1);
                 r.unshift(1);
 
@@ -153,9 +153,9 @@ function clearBlocks()
 
 function drawArena()
 {
-    for(let i=0; i< arena.length-2; i++)
+    for(let i=1; i< arena.length-2; i++)
     {
-        for(let j=0; j< arena[i].length-1;j++)
+        for(let j=1; j< arena[i].length-1;j++)
         {
             if(arena[i][j])
             {
