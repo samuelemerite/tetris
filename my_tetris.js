@@ -202,8 +202,8 @@ function update( time = 0)
     {
         mergeArena(player.matrix,player.position.x, player.position.y-1);
         clearBlocks();
-        player.position.x=0;
         player.position.y=0;
+        player.position.x=0;
 
         rand = Math.floor(Math.random() * pieces.length);
         player.matrix= pieces[rand];
