@@ -4,44 +4,44 @@ const scale= 20;
 ctx.scale(scale,scale);
 const colorPieces=["null","cyan","yellow","violet","green","red","blue","orange"];
 
-const twidth =canvas.clientWidth/ scale;
-const theight = canvas.clientHeight / scale ;
+const twidth =canvas.width/ scale;
+const theight = canvas.height / scale ;
 
 pieces=[
     [
-        [1,0,0,0],
-        [1,0,0,0],
-        [1,0,0,0],
-        [1,0,0,0]
+        [0,1,0,0],
+        [0,1,0,0],
+        [0,1,0,0],
+        [0,1,0,0]
     ],
     [
         [2,2],
         [2,2]
     ],
     [
+        [0,0,0],
         [3,3,3],
-        [0,3,0],
-        [0,0,0]
+        [0,3,0]
     ],
     [
+        [0,0,0],
         [0,4,4],
-        [4,4,0],
-        [0,0,0]
+        [4,4,0]
     ],
     [
+        [0,0,0],
         [5,5,0],
-        [0,5,5],
-        [0,0,0]
+        [0,5,5]
     ],
     [
-        [0,6,0],
-        [0,6,0],
-        [6,6,0]
+        [0,0,6],
+        [0,0,6],
+        [0,6,6]
     ],
     [
-        [0,7,0],
-        [0,7,0],
-        [0,7,7]
+        [7,0,0],
+        [7,0,0],
+        [7,7,0]
     ]
 ];
 const arena = [];
@@ -134,7 +134,7 @@ function clearBlocks()
         let clear =1;
         for(let j=1; j<arena[i].length - 1; j++)
         {
-            if(!arena [i][j])
+            if(!arena[i][j])
             {
                 clear = 0 ;
             }
@@ -144,7 +144,7 @@ function clearBlocks()
                 r.push(1);
                 r.unshift(1);
 
-                arena.splice(i,1);
+                arena.splice(i,0);
                 arena.splice(1,0,r);
             }
         }
@@ -213,7 +213,7 @@ function update( time = 0)
     }
 
     ctx.fillStyle= '#fff';
-    ctx.fillRect(0, 0, canvas.clientWidth,canvas.clientHeight);
+    ctx.fillRect(0, 0, canvas.width,canvas.height);
     drawArena();
     ctx.fillStyle = player.color;
     drawPieces(player.matrix,player.position.x,player.position.y);
@@ -253,7 +253,6 @@ document.addEventListener("keydown", event =>{
     {
         interval=1;
     }
-})
-//drawPieces(player.matrix,player.position.x,player.position.y);
+});
 initArena();
 update();
