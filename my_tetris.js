@@ -144,7 +144,7 @@ function clearBlocks()
                 r.push(1);
                 r.unshift(1);
 
-                arena.splice(i,0);
+                arena.splice(i,1);
                 arena.splice(1,0,r);
             }
         }
