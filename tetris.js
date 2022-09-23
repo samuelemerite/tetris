@@ -230,6 +230,25 @@ function move(dir)
     var x = current.x,y = current.y;
     switch(dir){
         case DIR.RIGHT: x = x+1; break;
-        case DIR.LEFT
+        case DIR.LEFT: x  = x-1; break;
+        case DIR.DOWN: y  = y-1; break;
+    }
+    if (unoccupied(current.type, x, y, current.dir)){
+        current.x= x;
+        curent.y = y;
+        invalidate();
+        return true;
+    }
+    else{
+        return false;
     }
 }
+function rotate()
+{
+    var newdir = (current.dir == DIR.MAX ? DIR.MIN: current.dir + 1);
+    if(unoccupied(current.type, current.x, current.y, newdir)){
+        current.dir = newdir;
+        invalidate();
+    }
+}
+
