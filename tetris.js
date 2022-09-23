@@ -58,13 +58,13 @@ var KEY     = { ESC: 27, SPACE: 32, LEFT: 37, UP: 38, RIGHT: 39, DOWN: 40 },
  var dx, dy,blocks,actions,playing,dt,current,next,score,vscore,rows,step; 
 
 
-var i = { blocks: [0x0F00,0x2222,0x00F0,0x4444],color:'cyan'  };
-var j = { blocks: [0x44C0,0x8E00,0x6440,0x0E20],color:'blue'  };
-var l = { blocks: [0x4460,0x0E80,0xC440,0x2E00],color:'orange'};
-var o = { blocks: [0xCC00,0xCC00,0xCC00,0xCC00],color:'yellow'};
-var s = { blocks: [0x06C0,0x8C40,0x6C00,0x4620],color:'green' };
-var t = { blocks: [0x0E40,0x4C40,0x4E00,0x4640],color:'purple'};
-var z = { blocks: [0x0C60,0x4C80,0xC600,0x2640],color:'red'   };
+var i = { taille: 4, blocks: [0x0F00,0x2222,0x00F0,0x4444],color:'cyan'  };
+var j = { taille: 3, blocks: [0x44C0,0x8E00,0x6440,0x0E20],color:'blue'  };
+var l = { taille: 3, blocks: [0x4460,0x0E80,0xC440,0x2E00],color:'orange'};
+var o = { taille: 2, blocks: [0xCC00,0xCC00,0xCC00,0xCC00],color:'yellow'};
+var s = { taille: 3, blocks: [0x06C0,0x8C40,0x6C00,0x4620],color:'green' };
+var t = { taille: 3, blocks: [0x0E40,0x4C40,0x4E00,0x4640],color:'purple'};
+var z = { taille: 3, blocks: [0x0C60,0x4C80,0xC600,0x2640],color:'red'   };
 
 //affichage des pieces
 function eachblock(type, x,y,dir,fn)
@@ -86,21 +86,150 @@ function eachblock(type, x,y,dir,fn)
 
 // verification des lignes
 
-function ocuppied(type , x,y,dir)
-{
-    var result = false;
-    eachblock(type,x,y,dir,function(x,y){   
-        if((x<0) || (x>=nx) || y>=ny || getBlock(x,y))
-        { 
-            result=true;
-        }
-        return result;
-      });
+function occupied(type, x, y, dir) {
+    var result = false
+    eachblock(type, x, y, dir, function(x, y) {
+      if ((x < 0) || (x >= nx) || (y < 0) || (y >= ny) || getBlock(x,y))
+        result = true;
+    });
+    return result;
+  }
+
+  function unoccupied(type, x, y, dir) {
+    return !occupied(type, x, y, dir);
+  }
+
+  var pieces = [];
+function randomPiece() {
+    if (pieces.length == 0)
+        pieces = [i,i,i,i,j,j,j,j,l,l,l,l,o,o,o,o,s,s,s,s,t,t,t,t,z,z,z,z];
+    var type = pieces.splice(random(0, pieces.length-1), 1)[0];
+    return { type: type, dir: DIR.UP, x: Math.round(random(0, nx - type.size)), y: 0 };
 }
-function unoccupied(type,x,y,dir)
+function run()
 {
-    return !ocuppied(type,x,y,dir);
+    showStats();
+    addEvents();
+    var last = now =timestamp();
+    function frame();
+    {
+        now = timestamp();
+        update(Math.min(1, (now - last)/1000.0));
+        draw();
+        stats.update();
+        last = now;
+        requestAnimationFrame(frame, canvas);
+    }
+    resize();
+    reset();
+    frame();
 }
 
-var pieces = [i,i,i,i,j,j,j,j,l,l,l,l,o,o,o,o,s,s,s,s,t,t,t,t,,z,z,z,z];
-var next = pieces[Math.round(Math.random(0, pieces.length-1))];
+function showStats()
+{
+    stats.domElement.id = 'stats' ;
+    get('menu').appendChild(stats.domElement);
+}
+
+function addEvents() {
+    document.addEventListener('keydown', keydown, false);
+    window.addEventListener('resize', resize, false);
+}
+
+function resize(event)
+{
+    canvas.width = canvas.clientWidth;
+    canvas.heigth = canvas.clientHeight;
+    ucanvas.width = ucanvas.clientWidth;
+    ucanvas.width = ucanvas.clientHeight;
+    dx = canvas.width / nx;
+    dy = canvas.heigth/ ny;
+    invalidate();
+    invalidateNext();
+}
+
+
+function keydown(ev) {
+    var handled = false;
+    if (playing) {
+      switch(ev.keyCode) {
+        case KEY.LEFT:   actions.push(DIR.LEFT);  handled = true; break;
+        case KEY.RIGHT:  actions.push(DIR.RIGHT); handled = true; break;
+        case KEY.UP:     actions.push(DIR.UP);    handled = true; break;
+        case KEY.DOWN:   actions.push(DIR.DOWN);  handled = true; break;
+        case KEY.ESC:    lose();                  handled = true; break;
+      }
+    }
+    else if (ev.keyCode == KEY.SPACE) {
+      play();
+      handled = true;
+    }
+    if (handled)
+      ev.preventDefault(); 
+}
+
+function play() { hide('start'); reset();          playing = true;  }
+function lose() { show('start'); setVisualScore(); playing = false; }
+
+function setVisualScore(n)      { vscore = n || score; invalidateScore(); }
+function setScore(n)            { score = n; setVisualScore(n);  }
+function addScore(n)            { score = score + n;   }
+function clearScore()           { setScore(0); }
+function clearRows()            { setRows(0); }
+function setRows(n)             { rows = n; step = Math.max(speed.min, speed.start - (speed.decrement*rows)); invalidateRows(); }
+function addRows(n)             { setRows(rows + n); }
+function getBlock(x,y)          { return (blocks && blocks[x] ? blocks[x][y] : null); }
+function setBlock(x,y,type)     { blocks[x] = blocks[x] || []; blocks[x][y] = type; invalidate(); }
+function clearBlocks()          { blocks = []; invalidate(); }
+function clearActions()         { actions = []; }
+function setCurrentPiece(piece) { current = piece || randomPiece(); invalidate();     }
+function setNextPiece(piece)    { next    = piece || randomPiece(); invalidateNext(); }
+
+
+function reset()
+{
+    dt= 0;
+    clearActions();
+    clearBlocks();
+    clearRows();
+    clearScore();
+    setCurrentPiece(next);
+    setNextPiece();
+}
+
+function update(idt)
+{
+    if (playing)
+    {
+        if(vscore<score)
+        {
+            setVisualScore(vscore + 1);
+        }
+        handle(action.shift());
+        dt = dt + idt;
+        if(dt > step)
+        {
+            dt = dt - step;
+            drop();
+        }
+    }
+}
+
+function handle(action)
+{
+    switch(action){
+        case DIR.LEFT: move(DIR.LEFT);   break;
+        case DIR.RIGHT: move(DIR.RIGHT); break;
+        case DIR.UP: rotate();           break;
+        case DIR.DOWN: drop();           break;
+    }
+}
+
+function move(dir)
+{
+    var x = current.x,y = current.y;
+    switch(dir){
+        case DIR.RIGHT: x = x+1; break;
+        case DIR.LEFT
+    }
+}
