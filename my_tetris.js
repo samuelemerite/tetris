@@ -1,11 +1,16 @@
 const canvas = document.getElementById("tetris");
 const ctx = canvas.getContext('2d');
+
 const scale= 20;
+
 ctx.scale(scale,scale);
+
 const colorPieces=["null","cyan","yellow","violet","green","red","blue","orange"];
 
 const twidth =canvas.width/ scale;
 const theight = canvas.height / scale ;
+
+//definition de la matrice des pieces
 
 pieces=[
     [
@@ -47,9 +52,9 @@ pieces=[
 const arena = [];
 
 let rand;
-
+//definition du joueur
 const player ={
-    position: {x: 0, y: 0},
+    position: {x: 0, y: 1},
     matrix: null,
     color: null
 }
@@ -58,6 +63,9 @@ rand = Math.floor(Math.random() * pieces.length);
 player.matrix= pieces[rand];
 player.color= colorPieces[rand+1];
 
+
+
+//dessiner les pieces
 function drawPieces(matrix,x,y)
 {
     for(let i=0;i<matrix.length;i++){
@@ -67,6 +75,8 @@ function drawPieces(matrix,x,y)
         }
     }
 }
+
+//faire roter les pieces
 
 function rotation(matrix,dir)
 {
@@ -100,6 +110,8 @@ function rotation(matrix,dir)
     return newMatrix;
 }
 
+//gerer les pieces
+
 function collides(player, arena)
 {
     for(let i= 0; i< player.matrix.length ; i++)
@@ -114,7 +126,7 @@ function collides(player, arena)
     }
     return 0;
 }
-
+//gerer l'arena
 function mergeArena( matrix , x, y)
 {
     for(let i=0 ; i< matrix.length; i++)
@@ -127,9 +139,11 @@ function mergeArena( matrix , x, y)
     
 }
 
+//effacer une ligne pleine
+
 function clearBlocks()
 {
-    for(let i=1; i< arena.length-2; i++)
+    for(let i = 1; i < arena.length-2; i++)
     {
         let clear =1;
         for(let j=1; j<arena[i].length - 1; j++)
@@ -146,10 +160,14 @@ function clearBlocks()
 
                 arena.splice(i,1);
                 arena.splice(1,0,r);
+                
             }
         }
     }
 }
+
+
+//dessiner l'arene et tout ses constituants
 
 function drawArena()
 {
@@ -166,8 +184,11 @@ function drawArena()
     }
 }
 
+//initialiser l'arene
+
 function initArena()
 {
+    arena=[];
     const r  = new Array(twidth +2).fill(1);
     arena.push(r);
     for(let i =0; i < theight; i++)
@@ -186,6 +207,8 @@ let interval =1000;
 let lastTime = 0;
 let count = 0;
 
+//gerer les modifications
+
 function update( time = 0)
 {
     const dt= time - lastTime;
@@ -202,7 +225,8 @@ function update( time = 0)
     {
         mergeArena(player.matrix,player.position.x, player.position.y-1);
         clearBlocks();
-        player.position.y=0;
+
+        player.position.y=1;
         player.position.x=0;
 
         rand = Math.floor(Math.random() * pieces.length);
@@ -219,7 +243,7 @@ function update( time = 0)
     drawPieces(player.matrix,player.position.x,player.position.y);
     requestAnimationFrame(update);
 }
-
+//gestion du clavier
 document.addEventListener("keydown", event =>{
     if(event.keyCode === 37 || event.keyCode === 52 || event.keyCode === 100)
     {
