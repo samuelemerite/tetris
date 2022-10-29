@@ -62,10 +62,30 @@ function isValidMove(matrix , cellRow , cellCol)
         {
             if(matrix[row][col]&&(
                 cellCol - col >= playfield[0].length||
-                cellCol + col
+                cellCol + col < 0||
+                cellCol + row >=playfield.length||
+                playfield[cellRow +row][CellCol + col]
             ))
+            {
+                return false;
+            }
         }
     }
+    return true;
+}
+
+//placer les tetrominos
+function  placeTetromino()
+{
+    for(let row = 0; row < matrix.length; row++)
+    {
+        for(let col= 0 ;col <matrix[row].length; col++)
+        {
+            if(tetromino.matrix[row])
+            {
+                return showGameOver();
+            }
+        }
 }
 
 
