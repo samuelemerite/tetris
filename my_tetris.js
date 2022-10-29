@@ -9,7 +9,7 @@ function getRandomInt(min, max)
 }
 
 //declaration du score
-var score =0;
+var score = 0;
 
 
 //generer la sequence les tetrominos
@@ -61,7 +61,7 @@ function isValidMove(matrix , cellRow , cellCol)
         for(let col= 0 ;col <matrix[row].length; col++)
         {
             if(matrix[row][col]&&(
-                cellCol - col >= playfield[0].length||
+                cellCol + col >= playfield[0].length||
                 cellCol + col < 0||
                 cellCol + row >=playfield.length||
                 playfield[cellRow +row][CellCol + col]
@@ -133,7 +133,7 @@ function showGameOver()
 }
 
 const canvas = document.getElementById('game');
-const context = canvas.getContext('2d');
+const context = canvas.getcontext('2d');
 const grid = 32;
 const tetrominoSequence = [];
 
@@ -200,7 +200,7 @@ const tetrominos = {
   };
   
 let count = 0;
-let tetromino = getNExtTetromino();
+let tetromino = getNextTetromino();
 let rAF = null;
 let gameOver = false;
 
@@ -238,9 +238,9 @@ function loop()
 
         context.fillStyle = colors[tetromino.name];
 
-        for(let row = 0 ; row <tetromino.matrix.lenght; row++)
+        for(let row = 0 ; row <tetromino.matrix.lengtt; row++)
         {
-            for(let col =0; col < tetromino.matrix[row].lenght;col++)
+            for(let col =0; col < tetromino.matrix[row].length;col++)
             {
                 if(tetromino.matrix[row][col])
                 {
