@@ -35,7 +35,7 @@ function getNextTetromino()
     const matrix = tetrominos[name];
     const col = playfield[0].length / 2 - Math.ceil(matrix[0].length / 2);
 
-    const row = name === 'I'?-1:2;
+    const row = name === 'I' ? -1 : -2;
 
     return{
         name: name,
@@ -133,7 +133,7 @@ function showGameOver()
 }
 
 const canvas = document.getElementById('game');
-const context = canvas.getcontext('2d');
+const context = canvas.getContext('2d');
 const grid = 32;
 const tetrominoSequence = [];
 
@@ -213,7 +213,7 @@ function loop()
     {
         for(let col =0; col <10; col++)
         {
-            if(playefield[row][col])
+            if(playfield[row][col])
             {
                 const name = playfield[row][col];
                 context.fillStyle = colors[name];
@@ -238,7 +238,7 @@ function loop()
 
         context.fillStyle = colors[tetromino.name];
 
-        for(let row = 0 ; row <tetromino.matrix.lengtt; row++)
+        for(let row = 0 ; row <tetromino.matrix.length; row++)
         {
             for(let col =0; col < tetromino.matrix[row].length;col++)
             {

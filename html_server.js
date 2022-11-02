@@ -11,7 +11,7 @@ function start_html_server() {
         response.write(html);
         response.end();
     }).listen(port, hostname, () => {
-       console.log("http://ub786019c-a64a.docode.fi.qwasar.io/#/home/docode/project")// console.log("Server running at http://web-XXXXXXXXX.docode.YYYY.qwasar.io");
+        console.log("Server running at http://web-XXXXXXXXX.docode.YYYY.qwasar.io");
         console.log("Replace XXXXXXXXX by your current workspace ID");
         console.log("(look at the URL of this page and XXXXXXXXX.docode.YYYY.qwasar.io, XXXXXXXXX is your workspace ID and YYYY is your zone)");
     });
