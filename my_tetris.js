@@ -183,23 +183,33 @@ function getRandomInt(min, max) {
   let rAF = null; 
   let gameOver = false;
   
-  //fonction chargee du jeu , des fonctions
+  // game loop
   function loop() {
     rAF = requestAnimationFrame(loop);
     context.clearRect(0,0,canvas.width,canvas.height);
+  
+    // draw the playfield
     for (let row = 0; row < 20; row++) {
       for (let col = 0; col < 10; col++) {
         if (playfield[row][col]) {
           const name = playfield[row][col];
           context.fillStyle = colors[name];
+  
+          // drawing 1 px smaller than the grid creates a grid effect
           context.fillRect(col * grid, row * grid, grid-1, grid-1);
         }
       }
     }
+  
+    // draw the active tetromino
     if (tetromino) {
+  
+      // tetromino falls every 35 frames
       if (++count > 35) {
         tetromino.row++;
         count = 0;
+  
+        // place piece if it runs into anything
         if (!isValidMove(tetromino.matrix, tetromino.row, tetromino.col)) {
           tetromino.row--;
           placeTetromino();
@@ -211,29 +221,39 @@ function getRandomInt(min, max) {
       for (let row = 0; row < tetromino.matrix.length; row++) {
         for (let col = 0; col < tetromino.matrix[row].length; col++) {
           if (tetromino.matrix[row][col]) {
+  
+            // drawing 1 px smaller than the grid creates a grid effect
             context.fillRect((tetromino.col + col) * grid, (tetromino.row + row) * grid, grid-1, grid-1);
           }
         }
       }
     }
   }
-
+  
+  // listen to keyboard events to move the active tetromino
   document.addEventListener('keydown', function(e) {
     if (gameOver) return;
+  
+    // left and right arrow keys (move)
     if (e.which === 37 || e.which === 39) {
       const col = e.which === 37
         ? tetromino.col - 1
         : tetromino.col + 1;
-   if (isValidMove(tetromino.matrix, tetromino.row, col)) {
+  
+      if (isValidMove(tetromino.matrix, tetromino.row, col)) {
         tetromino.col = col;
       }
     }
+  
+    // up arrow key (rotate)
     if (e.which === 38) {
       const matrix = rotate(tetromino.matrix);
       if (isValidMove(matrix, tetromino.row, tetromino.col)) {
         tetromino.matrix = matrix;
       }
     }
+  
+    // down arrow key (drop)
     if(e.which === 40) {
       const row = tetromino.row + 1;
   
@@ -248,5 +268,5 @@ function getRandomInt(min, max) {
     }
   });
   
-  // demarrer le jeu
+  // start the game
   rAF = requestAnimationFrame(loop);

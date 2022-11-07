@@ -1,20 +1,17 @@
 # Welcome to My Tetris
-***
+My tetris
 
 ## Task
-TODO - What is the problem? And where is the challenge?
+le probleme etait de placer les pieces sans que ca ne tombe directement
 
 ## Description
-TODO - How have you solved the problem?
+creer une fonction qui determine la position des pieces et leur validite
 
 ## Installation
-TODO - How to install your project? npm install? make? make re?
+juste ouvrir la page
 
 ## Usage
-TODO - How does it work?
-```
-./my_project argument1 argument2
-```
+c'est un jeu qui consiste a ranger les pieces d'un jardin en utilisant les touches directionnelle
 
 ### The Core Team
 
