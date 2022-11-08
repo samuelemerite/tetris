@@ -2,16 +2,16 @@
 My tetris
 
 ## Task
-le probleme etait de placer les pieces sans que ca ne tombe directement
+The problem was to place the parts without it falling directly
 
 ## Description
-creer une fonction qui determine la position des pieces et leur validite
+create a function that determines the position of the parts and their validity
 
 ## Installation
-juste ouvrir la page
+just open the page with :http://web-XXXXXXXXX.docode.YYYY.qwasar.io
 
 ## Usage
-c'est un jeu qui consiste a ranger les pieces d'un jardin en utilisant les touches directionnelle
+
 
 ### The Core Team
 
