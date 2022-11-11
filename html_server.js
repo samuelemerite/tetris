@@ -5,8 +5,9 @@ function start_html_server() {
     const hostname = '0.0.0.0';
     const port = 8080;
 
-    const server = http.createServer(function(request, response) {
+    /*const server = http.createServer(function(request, response) {
         response.writeHeader(200, {"Content-Type": "text/html"});
+
         html = fs.readFileSync('./index.html', 'utf8');
         response.write(html);
         response.end();
@@ -14,7 +15,36 @@ function start_html_server() {
         console.log("Server running at http://web-XXXXXXXXX.docode.YYYY.qwasar.io");
         console.log("Replace XXXXXXXXX by your current workspace ID");
         console.log("(look at the URL of this page and XXXXXXXXX.docode.YYYY.qwasar.io, XXXXXXXXX is your workspace ID and YYYY is your zone)");
+    });*/
+    const server  = http.createServer(function(request, response)
+    {
+        let extension = '.' + request.url;
+        let re = extension.match(/([.])\w+/g);
+        let type = (re === null) ?'.html' :re[0];
+        let path = (extension ==='./')? './index.html' : extension;
+        let contentType = '';
+        switch(type)
+        {
+            case 'html':
+                contentType = 'text/html';
+                break;
+            case '.css':
+                contentType = 'text/css';
+                break;
+            case '.js':
+                contentType = 'text/javascript';
+                break;
+        }
+        console.log(path);
+        response.writeHeader(200, {"Content-Type": contentType});
+        response.write(fs.readFileSync(path, 'utf8'));
+        response.end();
+    }).listen(port, hostname, () => {
+        console.log("Server running at http://web-XXXXXXXXX.docode.YYYY.qwasar.io");
+        console.log("Replace XXXXXXXXX by your current workspace ID");
+        console.log("(look at the URL of this page and XXXXXXXXX.docode.YYYY.qwasar.io, XXXXXXXXX is your workspace ID and YYYY is your zone)");
     });
+
 }
 
 start_html_server();
