@@ -8,7 +8,7 @@ The problem was to place the parts without it falling directly
 create a function that determines the position of the parts and their validity
 
 ## Installation
-just open the page with :http://web-XXXXXXXXX.docode.YYYY.qwasar.io
+just open the page with http://web-ub786019c-a64a.docode.fi.qwasar.io/
 
 ## Usage
 

@@ -7,14 +7,9 @@ function start_html_server() {
 
     const server = http.createServer(function(request, response) {
         response.writeHeader(200, {"Content-Type": "text/html"});
+        
         html = fs.readFileSync('./index.html', 'utf8');
         response.write(html);
-       response.writeHeader(200, {"Content-Type": "text/css"});
-        css = fs.readFileSync('./style.css','utf-8');
-        response.write(css);
-        response.writeHeader(200, {"Content-Type": "text/js"});
-        js = fs.readFileSync('./my_tetris.js', 'utf8');
-        response.write(js);
         response.end();
     }).listen(port, hostname, () => {
         console.log("Server running at http://web-XXXXXXXXX.docode.YYYY.qwasar.io");
