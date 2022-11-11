@@ -9,6 +9,12 @@ function start_html_server() {
         response.writeHeader(200, {"Content-Type": "text/html"});
         html = fs.readFileSync('./index.html', 'utf8');
         response.write(html);
+       response.writeHeader(200, {"Content-Type": "text/css"});
+        css = fs.readFileSync('./style.css','utf-8');
+        response.write(css);
+        response.writeHeader(200, {"Content-Type": "text/js"});
+        js = fs.readFileSync('./my_tetris.js', 'utf8');
+        response.write(js);
         response.end();
     }).listen(port, hostname, () => {
         console.log("Server running at http://web-XXXXXXXXX.docode.YYYY.qwasar.io");
@@ -16,7 +22,6 @@ function start_html_server() {
         console.log("(look at the URL of this page and XXXXXXXXX.docode.YYYY.qwasar.io, XXXXXXXXX is your workspace ID and YYYY is your zone)");
     });
 
-    const server
 }
 
 start_html_server();
