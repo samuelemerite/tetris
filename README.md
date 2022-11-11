@@ -11,7 +11,7 @@ create a function that determines the position of the parts and their validity
 just open the page with http://web-ub786019c-a64a.docode.fi.qwasar.io/
 
 ## Usage
-
+    play tetris
 
 ### The Core Team
 
